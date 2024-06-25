@@ -1,0 +1,67 @@
+﻿@using UserManagementSystem.Models
+@model List<UserManagementSystem.Models.UserListViewModel>
+@{
+    ViewData["Title"] = "UsersList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h1>@ViewData["Title"]</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>DOB</th>
+            <th>MaritalStatus</th>
+            <th>Action</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Name</td>
+                <td>@user.Email</td>
+                <td>@user.DOB</td>
+                <td>@user.MaritalStatus</td>
+                <td>
+                    <form method="post" asp-controller="UserList" asp-action="DeleteUser" asp-route-UserId="@user.UserId">
+
+                        <span id="confirmDeleteSpan_@user.UserId" style="display:none">
+                            <span>Are you sure you want to Delete?</span>
+                            <button type="submit" class="btn btn-outline-danger">Yes</button>
+                            <a href="#" class="btn btn-primary"
+                               onclick="confirmDelete('@user.UserId', false)">No</a>
+                        </span>
+                        <span id="deleteSpan_@user.UserId">
+                            <a href="#" class="btn btn-outline-danger"
+                               onclick="confirmDelete('@user.UserId', true)">Delete</a>
+                        </span>
+                    </form>
+                    @* <a class="btn btn-danger" asp-controller="UserList" asp-action="DeleteUser" asp-route-userId="@user.UserId">Delete</a> *@
+                </td>
+                <td>
+                    <a class="btn btn-outline-primary" asp-controller="UserList" asp-action="ManageUser" asp-route-userId="@user.UserId">Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<script>
+    function confirmDelete(uniqueId, isDeleteClicked) {
+        var deleteSpan = 'deleteSpan_' + uniqueId;
+        var confirmDeleteSpan = 'confirmDeleteSpan_' + uniqueId;
+        if (isDeleteClicked) {
+            $('#' + deleteSpan).hide();
+            $('#' + confirmDeleteSpan).show();
+        } else {
+            $('#' + deleteSpan).show();
+            $('#' + confirmDeleteSpan).hide();
+        }
+    }
+</script>
+
+    

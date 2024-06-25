@@ -1,0 +1,81 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Profile";
+    ViewData["ActivePage"] = ManageNavPages.Index;
+}
+
+<h3>@ViewData["Title"]</h3>
+<partial name="_StatusMessage" for="StatusMessage" />
+<div class="row">
+    <div class="col-md-6">
+        <form id="profile-form" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+        <label asp-for="Input.Name"></label>
+        <input asp-for="Input.Name" class="form-control" />
+        <span asp-validation-for="Input.Name" class="text-danger"></span>
+    </div>
+    <div class="col-md-6">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Input.Picture" style="width: 100%;"></label>
+            @if (Model.Input.Picture != null)
+            {
+                <img id="Picture" style="width:250px;height:250px; object-fit:cover" src="data:image/*;base64,@(Convert.ToBase64String(Model.Input.Picture))">
+            }
+            else
+            {
+                <img id="Picture" style="width:250px;height:250px; object-fit:cover" src="">
+            }
+            <input type="file"
+                    accept=".png,.jpg,.jpeg,.gif,.tif"
+                    asp-for="Input.Picture"
+                    class="form-control"
+                    style="border:0px!important;padding: 0px;padding-top: 10px;padding-bottom: 30px;"
+                    onchange="document.getElementById('Picture').src = window.URL.createObjectURL(this.files[0])" />
+            <span asp-validation-for="Input.Picture" class="text-danger"></span>
+        </div>
+    </div>
+
+            <div class="form-floating">
+                <input asp-for="Input.DOB" class="form-control" />
+                <label asp-for="Input.DOB" class="form-label"></label>
+            </div>
+
+            <div class="form-group">
+                <label>Marital Status</label>
+                <div>
+                    <input type="radio" asp-for="Input.MaritalStatus" value="Single" /> Single
+                    <input type="radio" asp-for="Input.MaritalStatus" value="Married" /> Married
+                    <input type="radio" asp-for="Input.MaritalStatus" value="Divorced" /> Divorced
+                    <input type="radio" asp-for="Input.MaritalStatus" value="Widowed" /> Widowed
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Gender</label>
+                <div>
+                    <input type="radio" asp-for="Input.Gender" value="Male" /> Male
+                    <input type="radio" asp-for="Input.Gender" value="Female" /> Female
+                    <input type="radio" asp-for="Input.Gender" value="Other" /> Other
+                </div>
+            </div>
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-floating">
+                <input asp-for="Username" class="form-control" disabled />
+                <label asp-for="Username" class="form-label"></label>
+            </div>
+            <div class="form-floating d-none">
+                <input asp-for="Input.PhoneNumber" class="form-control" />
+                <label asp-for="Input.PhoneNumber" class="form-label"></label>
+                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+            </div>
+            <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
